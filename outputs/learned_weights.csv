@@ -1,0 +1,13 @@
+,weight
+spread_p90,1.5471705167146061
+spread_p95,0.9789667054233857
+spread_mean,6.530393262645121
+cheap_freq_lt0,0.06268685900326129
+spike_freq_gt500,0.0
+spike_runlen_gt500,0.0
+spike_freq_gt1000,0.0
+spike_runlen_gt1000,0.0
+basis_abs_p95,0.49916880469744923
+basis_abs_p99,-0.4067109738662786
+basis_sign_flip_rate,0.042667205590713485
+basis_extreme_avg_runlen,-0.1408172120966658

@@ -1,0 +1,15 @@
+{
+  "top3": [
+    "RUSSEKST_RN",
+    "RN_DEC_AGR_C",
+    "RAT_RN_1"
+  ],
+  "objective": 109.32419206468388,
+  "hub": "HB_NORTH",
+  "hurdle": 16.23765625,
+  "alpha": 1.0,
+  "lambda": 0.5,
+  "top_m": 150,
+  "model": "ridge",
+  "reg_alpha": 1.0
+}
