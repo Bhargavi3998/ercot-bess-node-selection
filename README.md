@@ -10,43 +10,45 @@ Using public RT SPP at the native settlement interval, the code engineers settle
 - 3-hour spread tail (P90/P95) via rolling 3-hour averages
 - Cheap charging frequency: fraction of intervals with price < 0
 - Spike exposure and persistence: frequency and average run-length above $500 and $1000
-- Basis vs hub tail: P95/P99 of |node − hub|
+- Basis vs hub tail: P95/P99 of absolute (node price minus hub price)
 - Basis stability: sign-flip rate and persistence of extreme basis episodes
 
 Relevant artifact:
 - `outputs/node_features.csv` contains the engineered features per settlement point.
 
 ### Objective / selection (implemented)
-The pipeline implements a portfolio-aware selection objective:
+The pipeline selects three settlement points as a small portfolio, not three independent “top scores”.
 
-1) Learn a node attractiveness score \(V_i\) from features  
-2) Penalize downside tail risk using CVaR shortfall \(D_i\)  
-3) Penalize choosing highly correlated sites (diversification)
+Selection objective (plain English):
 
-Selection objective:
+Pick three settlement points that:
+- have high opportunity (high V)
+- have low downside tail risk (low D)
+- are not redundant (low correlation between sites)
 
-\[
-\max_{|S|=3}\ \sum_{i\in S}(V_i - \alpha D_i)\ -\ \lambda\sum_{i<j}\rho_{ij}
-\]
+Portfolio score = sum over chosen sites of (V - alpha * D) minus lambda * sum of pairwise correlations.
 
-where:
-- \(D_i = \mathrm{CVaR}_{95}(\max(0,\ H - R_{i,m}))\)
-- \(\rho_{ij}\) is correlation between node basis time series
+Where:
+- V is the node attractiveness score learned from features.
+- D is a downside risk penalty based on CVaR of monthly shortfall versus a hurdle (how bad the worst months are).
+- Correlation is computed from each node’s basis time series (node RT price minus hub RT price).
+- alpha controls how much you penalize downside risk.
+- lambda controls how much you penalize selecting highly correlated sites.
 
 Relevant artifacts:
 - `outputs/top3.json` contains the selected top-3 and parameters
-- `outputs/corr_matrix.csv` contains correlations \(\rho_{ij}\)
+- `outputs/corr_matrix.csv` contains the correlation matrix used for diversification
 
 ### Modeling approach (implemented)
 The mapping from engineered features to node attractiveness is implemented as a simple, explainable model:
 
-- Standardize features (z-scores)
-- Fit ridge or elastic-net regression to learn weights \(w_k\)
-- Compute \(V_i = \sum_k w_k z_{i,k}\)
+- Standardize features (z-scores) so different units don’t distort the model
+- Fit ridge or elastic-net regression to learn feature weights
+- Compute V as a weighted sum of standardized features
 
 Relevant artifacts:
-- `outputs/learned_weights.csv` contains learned weights \(w_k\)
-- `outputs/node_features.csv` contains \(V_i\) and \(D_i\)
+- `outputs/learned_weights.csv` contains learned feature weights
+- `outputs/node_features.csv` contains V and D for each settlement point
 
 ## Data source (public)
 - ERCOT Public API: RT Settlement Point Prices (NP6-905)
