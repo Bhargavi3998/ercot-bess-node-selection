@@ -70,7 +70,9 @@ def get_id_token(username: str, password: str) -> Token:
     }
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
     resp = requests.post(TOKEN_URL, data=data, headers=headers, timeout=60)
-    resp.raise_for_status()
+    if not resp.ok:
+        # ERCOT's login service explains rejections in the body (e.g. wrong username/password).
+        raise RuntimeError(f"ERCOT login failed (HTTP {resp.status_code}): {resp.text[:500]}")
     payload = resp.json()
     token = payload.get("id_token")
     expires_in = int(payload.get("expires_in", 3600))
@@ -130,11 +132,15 @@ class ErcotClient:
 
 def client_from_env() -> ErcotClient:
     load_dotenv()
-    u = os.getenv("ERCOT_USERNAME", "*******").strip()
-    p = os.getenv("ERCOT_PASSWORD", "******").strip()
-    k = os.getenv("ERCOT_SUBSCRIPTION_KEY", "abcdefghi123456").strip()
-    if not (u and p and k):
-        raise RuntimeError("Missing ERCOT_USERNAME / ERCOT_PASSWORD / ERCOT_SUBSCRIPTION_KEY in env/.env")
+    u = os.getenv("ERCOT_USERNAME", "").strip()
+    p = os.getenv("ERCOT_PASSWORD", "").strip()
+    k = os.getenv("ERCOT_SUBSCRIPTION_KEY", "").strip()
+    missing = [n for n, v in (("ERCOT_USERNAME", u), ("ERCOT_PASSWORD", p), ("ERCOT_SUBSCRIPTION_KEY", k)) if not v]
+    if missing:
+        raise RuntimeError(
+            f"Missing {', '.join(missing)}. Create a file named .env in {os.getcwd()} with lines like "
+            "ERCOT_USERNAME=you@example.com (no quotes, no spaces around '=')."
+        )
     return ErcotClient(username=u, password=p, subscription_key=k)
 
 
@@ -214,7 +220,8 @@ def prep_prices(raw: pd.DataFrame) -> pd.DataFrame:
         if not m["date"]:
             raise ValueError("No timestamp or delivery date columns found.")
         df["delivery_date"] = pd.to_datetime(df[m["date"]]).dt.date
-        hour = df[m["hour"]] if m["hour"] else 0
+        # ERCOT's deliveryHour runs 1..24 (hour 1 = 00:00-00:59), so shift to a 0-based hour.
+        hour = (pd.to_numeric(df[m["hour"]]) - 1) if m["hour"] else 0
         interval = df[m["interval"]] if m["interval"] else 1
         df["ts"] = pd.to_datetime(df["delivery_date"].astype(str)) + pd.to_timedelta(hour, unit="h") + pd.to_timedelta((interval - 1) * 15, unit="m")
     df = df[["ts", "settlement_point", "price"]].dropna()

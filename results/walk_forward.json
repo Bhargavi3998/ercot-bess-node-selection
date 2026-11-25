@@ -1,0 +1,167 @@
+{
+  "folds": [
+    {
+      "split": "2026-03-01",
+      "k": 3,
+      "alpha": 0.5,
+      "lambda": 0.25,
+      "nodes": 31,
+      "train_days": 70,
+      "test_days": 90,
+      "chosen": [
+        "SANDHSYD_5AC",
+        "BLACKJAK_RN",
+        "MROW_SLR_RN"
+      ],
+      "naive_top_k": [
+        "SANDHSYD_5AC",
+        "BLACKJAK_RN",
+        "MROW_SLR_RN"
+      ],
+      "oracle_top_k": [
+        "AQUI_ALL",
+        "CORALSLR_ALL",
+        "MROW_SLR_RN"
+      ],
+      "test_kw_yr": {
+        "chosen": 28.462029486334984,
+        "naive_top_k": 28.462029486334984,
+        "all_nodes_average": 28.243525843685255,
+        "oracle_top_k": 42.70624525715157
+      },
+      "rank_corr_train_vs_test": {
+        "policy": 0.6092741935483872,
+        "perfect_foresight": 0.7225806451612904
+      },
+      "test_capture_median_avg": 0.45137140751759647,
+      "chosen_portfolio_test_downside_kw_yr": 43.47791818654039,
+      "chosen_test_detail": {
+        "SANDHSYD_5AC": {
+          "pf_kw_yr": 57.237,
+          "median_kw_yr": 27.601,
+          "capture_median": 0.482
+        },
+        "BLACKJAK_RN": {
+          "pf_kw_yr": 50.074,
+          "median_kw_yr": 21.469,
+          "capture_median": 0.429
+        },
+        "MROW_SLR_RN": {
+          "pf_kw_yr": 66.317,
+          "median_kw_yr": 36.316,
+          "capture_median": 0.548
+        }
+      }
+    },
+    {
+      "split": "2026-06-01",
+      "k": 3,
+      "alpha": 0.5,
+      "lambda": 0.25,
+      "nodes": 31,
+      "train_days": 160,
+      "test_days": 88,
+      "chosen": [
+        "AQUI_ALL",
+        "SANDHSYD_5AC",
+        "MROW_SLR_RN"
+      ],
+      "naive_top_k": [
+        "AQUI_ALL",
+        "SANDHSYD_5AC",
+        "MROW_SLR_RN"
+      ],
+      "oracle_top_k": [
+        "AQUI_ALL",
+        "SADLBCK_AGR1",
+        "GRSES_UNIT1"
+      ],
+      "test_kw_yr": {
+        "chosen": 24.119517392221898,
+        "naive_top_k": 24.119517392221898,
+        "all_nodes_average": 22.045298896492323,
+        "oracle_top_k": 27.671908529269075
+      },
+      "rank_corr_train_vs_test": {
+        "policy": 0.5342741935483871,
+        "perfect_foresight": 0.9673387096774194
+      },
+      "test_capture_median_avg": 0.5074464281894105,
+      "chosen_portfolio_test_downside_kw_yr": 39.573732101456365,
+      "chosen_test_detail": {
+        "AQUI_ALL": {
+          "pf_kw_yr": 52.934,
+          "median_kw_yr": 29.327,
+          "capture_median": 0.554
+        },
+        "SANDHSYD_5AC": {
+          "pf_kw_yr": 40.383,
+          "median_kw_yr": 20.407,
+          "capture_median": 0.505
+        },
+        "MROW_SLR_RN": {
+          "pf_kw_yr": 41.975,
+          "median_kw_yr": 22.625,
+          "capture_median": 0.539
+        }
+      }
+    },
+    {
+      "split": "2026-09-01",
+      "k": 3,
+      "alpha": 0.5,
+      "lambda": 0.25,
+      "nodes": 31,
+      "train_days": 248,
+      "test_days": 61,
+      "chosen": [
+        "AQUI_ALL",
+        "MROW_SLR_RN",
+        "SANDHSYD_5AC"
+      ],
+      "naive_top_k": [
+        "AQUI_ALL",
+        "MROW_SLR_RN",
+        "SANDHSYD_5AC"
+      ],
+      "oracle_top_k": [
+        "LPCCS_UNIT1",
+        "SADLBCK_AGR1",
+        "TBWF_ES_BES1"
+      ],
+      "test_kw_yr": {
+        "chosen": 30.076974062989606,
+        "naive_top_k": 30.076974062989606,
+        "all_nodes_average": 30.258125799432847,
+        "oracle_top_k": 44.566043007870654
+      },
+      "rank_corr_train_vs_test": {
+        "policy": 0.8072580645161291,
+        "perfect_foresight": 0.5322580645161291
+      },
+      "test_capture_median_avg": 0.5211344577375842,
+      "chosen_portfolio_test_downside_kw_yr": 45.87815608576418,
+      "chosen_test_detail": {
+        "AQUI_ALL": {
+          "pf_kw_yr": 59.72,
+          "median_kw_yr": 35.261,
+          "capture_median": 0.59
+        },
+        "MROW_SLR_RN": {
+          "pf_kw_yr": 49.15,
+          "median_kw_yr": 28.503,
+          "capture_median": 0.58
+        },
+        "SANDHSYD_5AC": {
+          "pf_kw_yr": 53.544,
+          "median_kw_yr": 26.467,
+          "capture_median": 0.494
+        }
+      }
+    }
+  ],
+  "avg_gain_vs_average_kw_yr": 0.7038568006453545,
+  "rounds_beating_average": 2,
+  "rounds": 3,
+  "avg_rank_corr_policy": 0.6502688172043011
+}
